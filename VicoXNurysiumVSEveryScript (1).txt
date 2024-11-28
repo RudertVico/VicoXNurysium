@@ -150,7 +150,7 @@ AutoParry.ball = {
         auto_spam = false,
         cooldown = false,
 		respawn_time = 0,
-        parry_range = 8,
+        parry_range = 2,
         spam_range = 0,
         maximum_speed = 0,
 		old_speed = 0,
@@ -681,8 +681,8 @@ function AutoParry:is_spam()
 	local ball_properties = AutoParry.ball.properties
 	local reach_time = ball_properties.distance / ball_properties.maximum_speed - (player_ping / 1000)
 
-	if (tick() - self.last_hit) > 0.8 and self.entity_distance > distance_threshold and self.parries < 3 then
-		self.parries = 1
+	if (tick() - self.last_hit) > 0.8 and self.entity_distance > distance_threshold and self.parries < 2 then
+		self.parries = 0
 
 		return false
 	end
@@ -985,7 +985,7 @@ ConnectionsManager['auto_parry'] = RunService.PostSimulation:Connect(function()
 	local spam_accuracity = ball_properties.maximum_speed / 7 + ping_threshold
 	local parry_accuracity = ball_properties.maximum_speed / 11.5 + ping_threshold
 
-	ball_properties.spam_range = ping_threshold + ball_properties.speed / 2.8
+	ball_properties.spam_range = ping_threshold + ball_properties.speed / 2.4
     ball_properties.parry_range = ping_threshold + ball_properties.speed / math.pi * 2
 
 	if Player.Entity.properties.sword == 'Titan Blade' then
