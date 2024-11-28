@@ -144,7 +144,7 @@ AutoParry.ball = {
 		rotation = Vector3.zero,
 		position = Vector3.zero,
 		last_warping = tick(),
-        parry_remote = nil, -- RemoteEvent yang digunakan untuk FireServer
+        parry_remote = nil,
 		is_curved = false,
 		last_tick = tick(),
         auto_spam = false,
@@ -333,7 +333,6 @@ print("Platform detected:", platform)
 function resolve_parry_Remote()
     while true do
         local found = false
-        -- Gunakan `game:GetDescendants()` untuk mencari di seluruh game
         for _, object in pairs(game:GetDescendants()) do
             if object:IsA("RemoteEvent") and object.Name:find("\n") then
                 AutoParry.ball.properties.parry_remote = object
@@ -346,7 +345,7 @@ function resolve_parry_Remote()
         if found then
             break
         end
-        wait(0) -- Interval pencarian
+        wait(0) -- Interval search
     end
 
     if not AutoParry.ball.properties.parry_remote then
@@ -702,9 +701,9 @@ function AutoParry:is_spam()
 		return false
 	end
 
-	if (tick() - ball_properties.last_warping) < (reach_time / 1.3) and self.entity_distance > distance_threshold and self.parries < 4 then
+	if (tick() - ball_properties.last_warping) < (reach_time / 1.3) and self.entity_distance > distance_threshold and self.parries < 5 then
 		if self.parries > 3 then
-			self.parries = 1
+			self.parries = 2
 		end
 
 		return false
