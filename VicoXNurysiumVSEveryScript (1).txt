@@ -150,7 +150,7 @@ AutoParry.ball = {
         auto_spam = false,
         cooldown = false,
 		respawn_time = 0,
-        parry_range = 12,
+        parry_range = 8,
         spam_range = 0,
         maximum_speed = 0,
 		old_speed = 0,
@@ -330,31 +330,24 @@ local platform = game:GetService("UserInputService").TouchEnabled and "Android" 
 
 print("Platform detected:", platform)
 
-function resolve_parry_Remote()
-    while true do
-        local found = false
-        -- Gunakan `game:GetDescendants()` untuk mencari di seluruh game
-        for _, object in pairs(game:GetDescendants()) do
-            if object:IsA("RemoteEvent") and object.Name:find("\n") then
-                AutoParry.ball.properties.parry_remote = object
-                found = true
-                print("RemoteEvent found on platform:", platform, " | Remote Name:", object.Name)
-                break
-            end
-        end
+function AutoParry.get_parry_remote()
+    local Services = {cloneref(game:GetService("AnimationFromVideoCreatorService")), cloneref(game:GetService('AdService'))}
 
-        if found then
-            break
+    for _, v in pairs(Services) do
+        local temp_remote = v:FindFirstChildOfClass('RemoteEvent')
+    
+        if temp_remote and temp_remote.Name:find('\n') then
+            AutoParry.ball.properties.parry_remote = temp_remote
+            print("RemoteEvent found on platform:", platform, " | Remote Name:", temp_remote.Name)
         end
-        wait(0) -- Interval pencarian
     end
 
     if not AutoParry.ball.properties.parry_remote then
-        warn("RemoteEvent could not be found. Please check if the RemoteEvent exists!")
+        warn("No valid RemoteEvent found on platform:", platform)
     end
 end
 
-resolve_parry_Remote()
+AutoParry.get_parry_remote()
 
 function AutoParry.perform_grab_animation()
 	local animation = ReplicatedStorage.Shared.SwordAPI.Collection.Default:FindFirstChild('GrabParry')
@@ -988,7 +981,7 @@ ConnectionsManager['auto_parry'] = RunService.PostSimulation:Connect(function()
 
 	ball_properties.is_curved = AutoParry.is_curved()
 	
-	local ping_threshold = math.clamp(Player.Entity.properties.ping / 10, 10, 16)
+	local ping_threshold = math.clamp(Player.Entity.properties.ping / 10, 10, 20)
 	local spam_accuracity = ball_properties.maximum_speed / 7 + ping_threshold
 	local parry_accuracity = ball_properties.maximum_speed / 11.5 + ping_threshold
 
