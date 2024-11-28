@@ -442,13 +442,17 @@ function AutoParry.perform_parry()
 	else
 		direction = CFrame.new(camera_direction, target_position + Vector3.new(0, 60, 0))
 
-		ball_properties.parry_remote:FireServer(
-			0,
-			direction,
-			{ [AutoParry.target.aim.Name] = target_position },
-			{ target_position.X, target_position.Y },
-			false
-		)
+		local success, respone = pcall(function()
+   ball_properties.parry_remote:FireServer(
+        0.5,
+        direction,
+        { [AutoParry.target.aim.Name] = target_position },
+        { target_position.X, target_position.Y },
+        false
+    )
+end)
+
+warn(success, respone)
 	
 		task.delay(0.25, function()
 			if ball_properties.parries > 0 then
@@ -459,13 +463,17 @@ function AutoParry.perform_parry()
 		return
 	end
 
-	ball_properties.parry_remote:FireServer(
-		0.5,
-		direction,
-		{ [AutoParry.target.aim.Name] = target_position },
-		{ target_position.X, target_position.Y },
-		false
-	)
+	local success, respone = pcall(function()
+   ball_properties.parry_remote:FireServer(
+        0.5,
+        direction,
+        { [AutoParry.target.aim.Name] = target_position },
+        { target_position.X, target_position.Y },
+        false
+    )
+end)
+
+warn(success, respone)
 
     task.delay(0.25, function()
         if ball_properties.parries > 0 then
