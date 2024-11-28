@@ -709,9 +709,9 @@ function AutoParry:is_spam()
 		return false
 	end
 
-	if (tick() - ball_properties.last_warping) < (reach_time / 1.3) and self.entity_distance > distance_threshold and self.parries < 3 then
+	if (tick() - ball_properties.last_warping) < (reach_time / 1.3) and self.entity_distance > distance_threshold and self.parries < 4 then
 		if self.parries > 3 then
-			self.parries = 0
+			self.parries = 1
 		end
 
 		return false
@@ -747,7 +747,7 @@ function AutoParry:is_spam()
 
 	if self.ball_distance > self.range and self.entity_distance > distance_threshold then
 		if self.parries > 2 then
-			self.parries = 1
+			self.parries = 2
 		end
 
 		return false
