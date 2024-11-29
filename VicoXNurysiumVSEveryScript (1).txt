@@ -475,11 +475,6 @@ local TabFrame = Windows:NewTab({
 
 --// Auto Parry Section
 do
-    -- Pastikan interface.flags ada
-    if not interface.flags then
-        interface.flags = {}
-    end
-
     local AutoSection = TabFrame:NewSection({
         Title = "Parry",
         Icon = "rbxassetid://7743869054",
