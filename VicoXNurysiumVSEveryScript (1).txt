@@ -225,14 +225,6 @@ function ConnectionsManager:abadone()
 	end
 end
 
-ConnectionsManager['controller'] = RunService.Heartbeat:Connect(function()
-	if not interface.disconnected then
-		return
-	end
-
-	ConnectionsManager.abadone()
-end)
-
 local function linear_predict(a: any, b: any, time_volume: number)
     return a + (b - a) * time_volume
 end
