@@ -481,57 +481,57 @@ local TabFrame = Windows:NewTab({
 	Icon = "rbxassetid://7733960981"
 })
 
-
---// auto parry section
-
+--// Auto Parry Section
 do
+    -- Pastikan interface.flags ada
+    if not interface.flags then
+        interface.flags = {}
+    end
+
     local AutoSection = TabFrame:NewSection({
         Title = "Parry",
         Icon = "rbxassetid://7743869054",
         Position = "Left"
     })
 
-    AutoSection:NewToggle({
-		Title = "AutoParry",
-		Default = false,
-		Callback = function(state)
-                auto_parry_enabled = state
-	        print("Autoparry:", state)
-		end
-	})
-
-    -- Toggle for auto parry rotation
-    AutoSection:NewToggle({
-        Title = "Rotation",
+    local auto_parry_toggle = AutoSection:NewToggle({
+        Title = "Auto Parry",
         Default = false,
         Callback = function(state)
-        auto_parry_rotation_enabled = state
-            print("Auto Parry Rotation:", tr)
+            auto_parry_enabled = state
+            interface.flags["auto_parry"] = state
+            print("Auto Parry Enabled:", state)
         end
     })
 
-    -- Slider for auto parry rotation acuity
-    AutoSection:NewSlider({
+    local auto_parry_rotation_toggle = AutoSection:NewToggle({
+        Title = "Rotation",
+        Default = false,
+        Callback = function(state)
+            auto_parry_rotation_enabled = state
+            interface.flags["auto_parry_rotation"] = state
+            print("Auto Parry Rotation Enabled:", state)
+        end
+    })
+
+    local auto_parry_rotation_acuity_slider = AutoSection:NewSlider({
         Title = "Acuity",
         Min = 1,
         Max = 10,
         Default = 5,
         Callback = function(value)
             auto_parry_rotation_acuity_value = value
-            print("Auto Parry Rotation Acuity:", value)
+            interface.flags["auto_parry_rotation_acuity"] = value
+            print("Auto Parry Rotation Acuity Value:", value)
         end
     })
 
-    -- Dropdown for selecting curve method
-    AutoSection:NewDropdown({
+    local curve_method_dropdown = AutoSection:NewDropdown({
         Title = "Curve Method",
         Data = {"Accelerated", "Backwards", "Linear", "Camera", "Random"},
         Default = "Linear",
         Callback = function(value)
-            if not interface.flags then
-                interface.flags = {}
-            end
-            interface.flags['curve_method'] = value
+            interface.flags["curve_method"] = value
             print("Selected Curve Method:", value)
         end
     })
@@ -953,7 +953,8 @@ ReplicatedStorage.Remotes.ParrySuccessAll.OnClientEvent:Connect(function(slash: 
 end)
 
 ConnectionsManager['auto_parry'] = RunService.PostSimulation:Connect(function()
-	local auto_parry_enabled = interface.flags['auto_parry']
+	local auto_parry_enabled =
+interface.flags['auto_parry']
 
 	if not auto_parry_enabled then
 		AutoParry.reset()
