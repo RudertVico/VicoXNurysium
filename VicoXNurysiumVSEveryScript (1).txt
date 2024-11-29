@@ -150,7 +150,7 @@ AutoParry.ball = {
         auto_spam = false,
         cooldown = false,
 		respawn_time = 0,
-        parry_range = 2,
+        parry_range = 0,
         spam_range = 0,
         maximum_speed = 0,
 		old_speed = 0,
@@ -986,7 +986,7 @@ ConnectionsManager['auto_parry'] = RunService.PostSimulation:Connect(function()
 	local parry_accuracity = ball_properties.maximum_speed / 11.5 + ping_threshold
 
 	ball_properties.spam_range = ping_threshold + ball_properties.speed / math.pi * 5
-    ball_properties.parry_range = ping_threshold + ball_properties.speed / math.pi * 2
+    ball_properties.parry_range = ping_threshold / 5 + ball_properties.speed / math.pi * 1
 
 	if Player.Entity.properties.sword == 'Titan Blade' then
 		ball_properties.parry_range += 11
